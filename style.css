@@ -1,0 +1,331 @@
+/* General Body Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    margin: 0;
+    padding: 0;
+    background-color: #fbf5f4;
+    color: #5d4a1a;
+}
+
+/* Responsive Container */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* Top Contact Bar */
+.top-contact-bar {
+    background-color: #f2e3e1;
+    padding: 15px 0;
+    border-bottom: 1px solid #e8d8d6;
+}
+
+.top-contact-bar .container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.contact-item {
+    font-size: 0.9em;
+    margin: 5px 15px;
+}
+
+.contact-item h3 {
+    margin: 0 0 5px 0;
+    font-size: 1em;
+    color: #a98a4d;
+    font-weight: 600;
+}
+
+.contact-item p, .contact-item a {
+    margin: 0;
+    color: #5d4a1a;
+    text-decoration: none;
+    line-height: 1.4;
+}
+
+/* Header Styles */
+header {
+    text-align: center;
+    padding: 25px 0;
+    background-color: white;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-size: 2.2em;
+    color: #a98a4d;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Header Banner */
+.header-banner {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 25px;
+}
+
+/* Navigation Styles */
+nav {
+    background-color: #a98a4d;
+    padding: 15px 0;
+    text-align: center;
+    border-bottom: 3px solid #8c7a51;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    margin: 0 25px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #f2e3e1;
+}
+
+/* Main Content Styles */
+main {
+    background-color: #ffffff;
+    padding: 40px;
+    margin-top: 30px;
+    min-height: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+main h2 {
+    font-size: 2em;
+    color: #a98a4d;
+    border-bottom: 2px solid #f2e3e1;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Image Gallery Styles */
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Service Table Styles */
+.service-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+}
+
+.service-table th, .service-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #f2e3e1;
+}
+
+.service-table th {
+    background-color: #fff8f7;
+    font-size: 1.2em;
+    color: #a98a4d;
+}
+
+.service-table .price {
+    font-weight: bold;
+    color: #8c7a51;
+    white-space: nowrap;
+}
+
+/* Booking Form Styles */
+.booking-form .form-group {
+    margin-bottom: 30px; /* Khoảng cách giữa các ô */
+    display: block; /* Sử dụng block để nhãn và input xuống dòng */
+}
+
+.booking-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #5d4a1a;
+}
+
+.booking-form input[type="text"],
+.booking-form input[type="tel"],
+.booking-form input[type="datetime-local"],
+.booking-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    height: 40px;
+    display: block; /* Đảm bảo input xuống dòng */
+}
+
+.booking-form select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%235d4a1a" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.booking-form .submit-btn {
+    background-color: #a98a4d;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.booking-form .submit-btn:hover {
+    background-color: #8c7a51;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 40px 20px;
+    background-color: #f2e3e1;
+    border-top: 1px solid #e8d8d6;
+}
+
+/* Google Map iframe */
+.google-map {
+    width: 100%;
+    height: 400px;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.copyright {
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #8c7a51;
+}
+
+/* Success Message Style */
+.success-message {
+    padding: 25px;
+    background-color: #f0fff0;
+    border: 1px solid #a9d9a9;
+    border-radius: 8px;
+    text-align: center;
+    color: #2e6b2e;
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+/* Final Form Styling Fix */
+.booking-form input.form-control,
+.booking-form select.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+/* Style for the booking confirmation summary */
+.booking-summary {
+    text-align: left;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #d4e9d4;
+}
+
+.booking-summary p {
+    margin: 8px 0;
+    font-size: 1em;
+}
+
+.booking-summary span {
+    font-weight: normal;
+    color: #5d4a1a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+    .top-contact-bar .container {
+        flex-direction: column;
+        text-align: center;
+    }
+    .contact-item {
+        margin: 10px 0;
+    }
+    .header-banner {
+        height: 200px;
+    }
+    main {
+        padding: 20px;
+    }
+    nav a {
+        margin: 0 15px;
+        font-size: 1em;
+    }
+    .booking-form .form-group {
+        margin-bottom: 20px;
+    }
+    .booking-form input, .booking-form select {
+        padding: 10px;
+        height: 35px;
+    }
+    .booking-form .submit-btn {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+    .google-map {
+        height: 250px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .header-banner {
+        height: 250px;
+    }
+    main {
+        padding: 30px;
+    }
+    .booking-form .form-group {
+        margin-bottom: 22px;
+    }
+}
