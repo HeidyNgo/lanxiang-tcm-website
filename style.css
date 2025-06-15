@@ -1,0 +1,318 @@
+/* General Body Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    margin: 0;
+    padding: 0;
+    background-color: #fbf5f4;
+    color: #5d4a1a;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Top contact bar */
+.top-contact-bar {
+    background-color: #f2e3e1;
+    padding: 15px 0;
+    border-bottom: 1px solid #e8d8d6;
+}
+
+.top-contact-bar .container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.contact-item {
+    font-size: 0.9em;
+    margin: 5px 15px;
+}
+
+.contact-item h3 {
+    margin: 0 0 5px 0;
+    font-size: 1em;
+    color: #a98a4d;
+    font-weight: 600;
+}
+
+.contact-item p, .contact-item a {
+    margin: 0;
+    color: #5d4a1a;
+    text-decoration: none;
+    line-height: 1.4;
+}
+
+/* Header Styles */
+header {
+    text-align: center;
+    padding: 25px 0;
+    background-color: white;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-size: 2.2em;
+    color: #a98a4d;
+    margin: 0;
+    font-weight: 600;
+}
+
+.header-banner {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 25px;
+}
+
+/* Navigation Styles */
+nav {
+    background-color: #a98a4d;
+    padding: 15px 0;
+    text-align: center;
+    border-bottom: 3px solid #8c7a51;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    margin: 0 25px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #f2e3e1;
+}
+
+/* Main Content Styles */
+main {
+    background-color: #ffffff;
+    padding: 40px;
+    margin-top: 30px;
+    min-height: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+main h2 {
+    font-size: 2em;
+    color: #a98a4d;
+    border-bottom: 2px solid #f2e3e1;
+    padding-bottom: 10px;
+    margin-bottom: 30px; /* Tăng khoảng cách */
+}
+
+/* Image Gallery Styles */
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Service Table Styles */
+.service-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    font-size: 1.1em; /* Tăng cỡ chữ */
+}
+
+.service-table th, .service-table td {
+    padding: 18px 15px; /* Tăng padding */
+    text-align: left;
+    border-bottom: 1px solid #f2e3e1;
+}
+
+.service-table th {
+    background-color: #fff8f7;
+    font-size: 1.2em;
+    color: #a98a4d;
+}
+
+.service-table .price {
+    font-weight: bold;
+    color: #8c7a51;
+    white-space: nowrap;
+}
+
+/* REFINED Booking Form Styles */
+.booking-form .form-group {
+    margin-bottom: 25px;
+}
+
+.booking-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #8c7a51;
+}
+
+.booking-form input,
+.booking-form select {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box; 
+    background-color: #fafafa;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.booking-form input:focus,
+.booking-form select:focus {
+    outline: none;
+    border-color: #a98a4d;
+    box-shadow: 0 0 5px rgba(169, 138, 77, 0.5);
+}
+
+.booking-form .submit-btn {
+    background: linear-gradient(145deg, #b59a5f, #a98a4d);
+    color: white;
+    padding: 18px 35px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 100%;
+}
+
+.booking-form .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.booking-form .submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Success Message Style */
+.success-message {
+    padding: 30px;
+    background-color: #f0fff0;
+    border-left: 5px solid #a9d9a9;
+    border-radius: 8px;
+    text-align: center;
+    color: #2e6b2e;
+}
+.success-message h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+.booking-summary {
+    text-align: left;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 6px;
+}
+.booking-summary p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+.booking-summary strong {
+    color: #8c7a51;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 40px 20px;
+    background-color: #f2e3e1;
+    border-top: 1px solid #e8d8d6;
+}
+
+/* Google Map iframe */
+.google-map {
+    width: 100%;
+    height: 400px;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.copyright {
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #8c7a51;
+}
+
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 992px) {
+    .header-banner {
+        height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-contact-bar .container {
+        flex-direction: column;
+    }
+    .contact-item {
+        margin: 10px 0;
+    }
+    nav a {
+        margin: 0 15px;
+        font-size: 1.1em;
+    }
+    .image-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    main {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    nav {
+        padding: 10px 0;
+    }
+    nav a {
+        display: block;
+        margin: 10px 0;
+    }
+    .image-gallery {
+        grid-template-columns: 1fr;
+    }
+    main h2 {
+        font-size: 1.8em;
+    }
+}
