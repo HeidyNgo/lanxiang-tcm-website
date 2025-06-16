@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - LANXIANG TCM</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .submit-btn-container {
+            position: relative;
+        }
+
+        .submit-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .phone-validation {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-submitting {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-contact-bar">
+        <div class="container">
+            <div class="contact-item">
+                <h3>Hotline Booking / <span lang="zh-CN">预约热线</span></h3>
+                <p><a href="tel:+6597221681">+65 9722 1681</a></p>
+            </div>
+            <div class="contact-item">
+                <h3>Address / <span lang="zh-CN">地址</span></h3>
+                <p>1 Park Road, People's Park Complex, Singapore 059108<br>#03-73K, #03-28, #03-69, #03-29</p>
+            </div>
+            <div class="contact-item">
+                <h3>Opening Hours / <span lang="zh-CN">营业时间</span></h3>
+                <p><span lang="en">Monday - Sunday:</span> 9:00 AM - 10:30 PM<br><span lang="zh-CN">周一至周日:</span> 上午 9:00 - 晚上 10:30</p>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <img src="image/logo.jpg" alt="LANXIANG TCM Logo" class="logo">
+            <h1>LANXIANG TCM<br><span lang="zh-CN">兰湘中医疼痛治疗中心</span></h1>
+            <img src="image/massage.jpg" alt="Relaxing massage therapy at Lanxiang TCM" class="header-banner">
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="index.html">Home / <span lang="zh-CN">首页</span></a>
+            <a href="service.html">Services / <span lang="zh-CN">服务项目</span></a>
+            <a href="booking.html">Booking / <span lang="zh-CN">预约</span></a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h2>Book an Appointment / <span lang="zh-CN">预约</span></h2>
+
+        <div id="errorMessage" class="error-message" style="display:none;">
+            <p><strong>Sorry! You can only book during business hours and within 10 days. Thanks!</strong></p>
+            <p lang="zh-CN"><strong>抱歉！您只能在营业时间内预订，并且最多只能预订10天内的服务。谢谢！</strong></p>
+        </div>
+
+        <div id="successMessage" class="success-message" style="display:none;">
+            <p><strong>Booking request sent successfully!</strong><br>We will contact you shortly to confirm your appointment.</p>
+            <p lang="zh-CN"><strong>预约请求已成功发送！</strong><br>我们会尽快与您联系以确认您的预约。</p>
+            <div class="booking-summary">
+                <p><strong>Name:</strong> <span id="confirm_name"></span></p>
+                <p><strong>Date & Time:</strong> <span id="confirm_datetime"></span></p>
+                <p><strong>Service:</strong> <span id="confirm_service"></span></p>
+                <p><strong>Phone:</strong> <span id="confirm_phone"></span></p>
+                <p><strong>Masseuse:</strong> <span id="confirm_masseuse"></span></p>
+            </div>
+        </div>
+
+        <p id="form-description">
+            <span lang="en">Please fill out the form below to request an appointment. We will call you back to confirm.</span><br>
+            <span lang="zh-CN">请填写以下表格以预约。 我们会打电话给您确认。</span>
+        </p>
+
+        <!-- Nhúng Google Form -->
+        <iframe 
+            src="https://docs.google.com/forms/d/e/1FAIpQLSehVr5uzQ5C6jbbmiQ-_5icimmHbC0naWf_RFt_xkMfjfq7eQ/viewform?embedded=true" 
+            width="100%" 
+            height="1200" 
+            frameborder="0" 
+            marginheight="0" 
+            marginwidth="0" 
+            style="border: none;">
+            Loading…
+        </iframe>
+    </main>
+
+    <footer>
+        <div class="container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8105740436853!2d103.8416413759082!3d1.2874937611842858!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da190ad3a9920b%3A0xf30ca32deb24fdf1!2sPeople's%20Park%20Complex!5e0!3m2!1sen!2s!4v1718362615878!5m2!1sen!2s" class="google-map" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <p class="copyright">© 2025 LANXIANG TCM. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
