@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - LANXIANG TCM</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .submit-btn-container {
+            position: relative;
+        }
+        
+        .submit-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .phone-validation {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Thêm hiệu ứng khi form đang gửi */
+        .form-submitting {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-contact-bar">
+        <div class="container">
+            <div class="contact-item">
+                <h3>Hotline Booking / <span lang="zh-CN">预约热线</span></h3>
+                <p><a href="tel:+6597221681">+65 9722 1681</a></p>
+            </div>
+            <div class="contact-item">
+                <h3>Address / <span lang="zh-CN">地址</span></h3>
+                <p>1 Park Road, People's Park Complex, Singapore 059108<br>#03-73K, #03-28, #03-69, #03-29</p>
+            </div>
+            <div class="contact-item">
+                <h3>Opening Hours / <span lang="zh-CN">营业时间</span></h3>
+                <p><span lang="en">Monday - Sunday:</span> 9:00 AM - 10:30 PM<br><span lang="zh-CN">周一至周日:</span> 上午 9:00 - 晚上 10:30</p>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <img src="image/logo.jpg" alt="LANXIANG TCM Logo" class="logo">
+            <h1>LANXIANG TCM<br><span lang="zh-CN">兰湘中医疼痛治疗中心</span></h1>
+            <img src="image/massage.jpg" alt="Relaxing massage therapy at Lanxiang TCM" class="header-banner">
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <a href="index.html">Home / <span lang="zh-CN">首页</span></a>
+            <a href="service.html">Services / <span lang="zh-CN">服务项目</span></a>
+            <a href="booking.html">Booking / <span lang="zh-CN">预约</span></a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h2>Book an Appointment / <span lang="zh-CN">预约</span></h2>
+        
+        <div id="errorMessage" class="error-message" style="display:none;">
+            <p><strong>Sorry! You can only book during business hours and within 10 days. Thanks!</strong></p>
+            <p lang="zh-CN"><strong>抱歉！您只能在营业时间内预订，并且最多只能预订10天内的服务。谢谢！</strong></p>
+        </div>
+        
+        <div id="successMessage" class="success-message" style="display:none;">
+            <p><strong>Booking request sent successfully!</strong><br>We will contact you shortly to confirm your appointment.</p>
+            <p lang="zh-CN"><strong>预约请求已成功发送！</strong><br>我们会尽快与您联系以确认您的预约。</p>
+            <div class="booking-summary">
+                <p><strong>Name:</strong> <span id="confirm_name"></span></p>
+                <p><strong>Date & Time:</strong> <span id="confirm_datetime"></span></p>
+                <p><strong>Service:</strong> <span id="confirm_service"></span></p>
+                <p><strong>Phone:</strong> <span id="confirm_phone"></span></p>
+                <p><strong>Masseuse:</strong> <span id="confirm_masseuse"></span></p>
+            </div>
+        </div>
+
+        <form id="bookingForm" action="https://script.google.com/macros/s/AKfycbzOMC_t5Pa9QAA0FUmAO6Kjn7pBqkjIidZbkjQMpYr0Jv32fRbvG1XcKu-yjZVITroW/exec" method="POST">
+            <p id="form-description">
+                <span lang="en">Please fill out the form below to request an appointment. We will call you back to confirm.</span>
+                <br>
+                <span lang="zh-CN">请填写以下表格以预约。 我们会打电话给您确认。</span>
+            </p>
+            
+            <div class="form-line">
+                <label for="fullName">Full Name / <span lang="zh-CN">全名</span></label>
+            </div>
+            <div class="form-line">
+                <input type="text" id="fullName" name="FullName" class="form-control" required>
+            </div>
+            
+            <div class="form-line">
+                <label for="bookingDateTime">Booking Date & Time / <span lang="zh-CN">预约日期和时间</span></label>
+            </div>
+            <div class="form-line">
+                <input type="datetime-local" id="bookingDateTime" name="BookingDateTime" class="form-control" required>
+            </div>
+            
+            <div class="form-line">
+                <label for="service">Service / <span lang="zh-CN">服务项目</span></label>
+            </div>
+            <div class="form-line">
+                <select id="service" name="Service" class="form-control" required>
+                    <option value="">-- Please Select --</option>
+                    <optgroup label="Main Services">
+                        <option value="Foot Massage - 30 mins ($15)">Foot Massage - 30 mins ($15)</option>
+                        <option value="Foot Massage - 40 mins ($20)">Foot Massage - 40 mins ($20)</option>
+                        <option value="Foot Massage - 60 mins ($25)">Foot Massage - 60 mins ($25)</option>
+                        <option value="Foot + Shoulder Massage - 40 mins ($20)">Foot + Shoulder Massage - 40 mins ($20)</option>
+                        <option value="Foot + Shoulder Massage - 60 mins ($25)">Foot + Shoulder Massage - 60 mins ($25)</option>
+                        <option value="Professional Pedicure - 30 mins ($30)">Professional Pedicure - 30 mins ($30)</option>
+                        <option value="Ear Candling - 30 mins ($30)">Ear Candling - 30 mins ($30)</option>
+                        <option value="Body Massage - 30 mins ($30)">Body Massage - 30 mins ($30)</option>
+                        <option value="Body Massage - 60 mins ($45)">Body Massage - 60 mins ($45)</option>
+                        <option value="Body Massage - 90 mins ($70)">Body Massage - 90 mins ($70)</option>
+                        <option value="Body Massage - 120 mins ($90)">Body Massage - 120 mins ($90)</option>
+                    </optgroup>
+                    <optgroup label="Combo Packages">
+                        <option value="Combo: 30ft + 30body ($35)">Combo: 30ft + 30body ($35)</option>
+                        <option value="Combo: 45ft + 30body ($45)">Combo: 45ft + 30body ($45)</option>
+                        <option value="Combo: 45ft + 45body ($50)">Combo: 45ft + 45body ($50)</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <div class="form-line">
+                <label for="masseuse">Preferred Staff (Optional) / <span lang="zh-CN">按摩师 (选填)</span></label>
+            </div>
+            <div class="form-line">
+                <input type="text" id="masseuse" name="PreferredStaff" class="form-control">
+            </div>
+            
+            <div class="form-line">
+                <label for="phone">Phone Number / <span lang="zh-CN">电话号码</span></label>
+                <div class="phone-validation" id="phoneValidation">Please enter a valid phone number (8-15 digits)</div>
+            </div>
+            <div class="form-line">
+                <input type="tel" id="phone" name="PhoneNumber" class="form-control" required pattern="[0-9]{8,15}">
+            </div>
+            
+            <div class="form-line submit-btn-container">
+                <button type="submit" id="submitButton" class="submit-btn">
+                    <span class="loading-spinner" id="loadingSpinner"></span>
+                    Send Booking Request / <span lang="zh-CN">发送预约请求</span>
+                </button>
+            </div>
+        </form>
+    </main>
+    
+    <footer>
+        <div class="container">
+             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8105740436853!2d103.8416413759082!3d1.2874937611842858!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da190ad3a9920b%3A0xf30ca32deb24fdf1!2sPeople's%20Park%20Complex!5e0!3m2!1sen!2s!4v1718362615878!5m2!1sen!2s" class="google-map" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <p class="copyright">© 2025 LANXIANG TCM. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        const bookingForm = document.getElementById('bookingForm');
+        const submitButton = document.getElementById('submitButton');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const successMessageDiv = document.getElementById('successMessage');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const phoneInput = document.getElementById('phone');
+        const phoneValidation = document.getElementById('phoneValidation');
+
+        // Phone number validation
+        phoneInput.addEventListener('input', function() {
+            const isValid = /^[0-9]{8,15}$/.test(this.value);
+            phoneValidation.style.display = isValid ? 'none' : 'block';
+        });
+
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            errorMessageDiv.style.display = 'none';
+
+            // Validate phone number
+            const phoneValid = /^[0-9]{8,15}$/.test(phoneInput.value);
+            if (!phoneValid) {
+                phoneValidation.style.display = 'block';
+                return;
+            } else {
+                phoneValidation.style.display = 'none';
+            }
+
+            // Date validation
+            const dateTimeValue = document.getElementById('bookingDateTime').value;
+            if (!dateTimeValue) {
+                alert("Please select a valid date and time");
+                return;
+            }
+            
+            const selectedDate = new Date(dateTimeValue);
+            const now = new Date();
+            
+            const tenDaysLater = new Date();
+            tenDaysLater.setDate(now.getDate() + 10);
+            tenDaysLater.setHours(23, 59, 59, 999);
+
+            if (selectedDate > tenDaysLater || selectedDate < now) {
+                errorMessageDiv.style.display = 'block';
+                return;
+            }
+            
+            const hours = selectedDate.getHours();
+            const minutes = selectedDate.getMinutes();
+            const totalMinutes = hours * 60 + minutes;
+
+            // Giờ làm việc từ 9:00 (540 phút) đến 22:30 (1350 phút)
+            if (totalMinutes < 540 || totalMinutes > 1350) {
+                errorMessageDiv.style.display = 'block';
+                return;
+            }
+            
+            // Show loading spinner and disable button
+            submitButton.disabled = true;
+            loadingSpinner.style.display = 'inline-block';
+            submitButton.querySelector('span:last-of-type').innerHTML = 'Sending... / <span lang="zh-CN">正在发送...</span>';
+            
+            // Add submitting class to form
+            bookingForm.classList.add('form-submitting');
+            
+            const formData = new FormData(bookingForm);
+
+            fetch(bookingForm.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const fullName = document.getElementById('fullName').value;
+                    const serviceSelect = document.getElementById('service');
+                    const service = serviceSelect.options[serviceSelect.selectedIndex].text;
+                    const formattedDateTime = `${('0' + selectedDate.getDate()).slice(-2)}/${('0' + (selectedDate.getMonth() + 1)).slice(-2)}/${selectedDate.getFullYear()} ${('0' + selectedDate.getHours()).slice(-2)}:${('0' + selectedDate.getMinutes()).slice(-2)}`;
+
+                    document.getElementById('confirm_name').innerText = fullName;
+                    document.getElementById('confirm_datetime').innerText = formattedDateTime;
+                    document.getElementById('confirm_service').innerText = service;
+                    document.getElementById('confirm_phone').innerText = phoneInput.value;
+                    document.getElementById('confirm_masseuse').innerText = document.getElementById('masseuse').value || 'None';
+
+                    bookingForm.style.display = 'none';
+                    document.getElementById('form-description').style.display = 'none';
+                    successMessageDiv.style.display = 'block';
+                } else {
+                    throw new Error(data.message || 'An unknown error occurred on the server.');
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                alert("There was an error processing your request: " + error.message);
+            })
+            .finally(() => {
+                // Re-enable button and reset text
+                submitButton.disabled = false;
+                loadingSpinner.style.display = 'none';
+                bookingForm.classList.remove('form-submitting');
+                // We need to reconstruct the button content since innerHTML was modified
+                submitButton.innerHTML = '<span class="loading-spinner" id="loadingSpinner" style="display: none;"></span> Send Booking Request / <span lang="zh-CN">发送预约请求</span>';
+            });
+        });
+
+        // Auto-uppercase for name field
+        const fullNameInput = document.getElementById('fullName');
+        fullNameInput.addEventListener('input', function() { 
+            this.value = this.value.toUpperCase(); 
+        });
+        
+        // Set min and max for datetime picker
+        const now = new Date();
+        const datetimeInput = document.getElementById('bookingDateTime');
+        
+        // Min: current datetime
+        datetimeInput.min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        
+        // Max: 10 days from now
+        const maxDate = new Date();
+        maxDate.setDate(now.getDate() + 10);
+        datetimeInput.max = new Date(maxDate.getTime() - maxDate.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    </script>
+</body>
+</html>
