@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - LANXIANG TCM</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS gốc của bạn */
+        .loading-spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; margin-right: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .submit-btn-container { position: relative; }
+        .submit-btn:disabled { background: #cccccc; cursor: not-allowed; transform: none; box-shadow: none; }
+        .phone-validation { color: #e74c3c; font-size: 0.9em; margin-top: 5px; display: none; }
+
+        /* CSS MỚI CHO DANH SÁCH NHÂN VIÊN */
+        #staff-availability-container { background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-top: 15px; display: none; }
+        .staff-list { list-style-type: none; padding: 0; margin: 0; }
+        .staff-item { padding: 10px; border-bottom: 1px solid #eee; display: flex; align-items: center; cursor: pointer; transition: background-color 0.2s; }
+        .staff-item:last-child { border-bottom: none; }
+        .staff-item:hover { background-color: #f0f0f0; }
+        .staff-item input[type="radio"] { margin-right: 15px; transform: scale(1.2); }
+        .staff-name { font-weight: bold; flex-grow: 1; }
+        .staff-status { font-size: 0.9em; padding: 3px 8px; border-radius: 12px; color: white; }
+        .status-available { background-color: #2ecc71; }
+        .status-busy { background-color: #e74c3c; }
+        #staff-loading { text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="top-contact-bar">...</div>
+    <header>...</header>
+    <nav>...</nav>
+
+    <main class="container">
+        <h2>Book an Appointment / <span lang="zh-CN">预约</span></h2>
+        
+        <div id="errorMessage" class="error-message" style="display:none;">...</div>
+        <div id="apiErrorMessage" class="error-message" style="display:none;"></div>
+        <div id="successMessage" class="success-message" style="display:none;">...</div>
+
+        <form id="bookingForm" action="https://script.google.com/macros/s/AKfycbzzTJWXLapiMmH6rTdaADD3wTLxm33aj3Cc3mfDQ5862wHXh2WrM2wZg9QMJXzhSFGQ/exec" method="POST">
+            <p id="form-description">...</p>
+            
+            <div class="form-line"><label for="fullName">...</label></div>
+            <div class="form-line"><input type="text" id="fullName" ...></div>
+            <div class="form-line"><label for="bookingDateTime">...</label></div>
+            <div class="form-line"><input type="datetime-local" id="bookingDateTime" ...></div>
+            <div class="form-line"><label for="service">...</label></div>
+            <div class="form-line"><select id="service" ...>...</select></div>
+            
+            <div class="form-line">
+                <label>Preferred Staff (Optional) / <span lang="zh-CN">按摩师 (选填)</span></label>
+            </div>
+            
+            <input type="text" id="masseuse" name="PreferredStaff" class="form-control" style="display:none;">
+            <div id="staff-availability-container">
+                <div id="staff-loading" style="display: none;"><p>Please select a date above...</p></div>
+                <ul class="staff-list" id="staff-list"></ul>
+            </div>
+            
+            <div class="form-line"><label for="phone">...</label>...</div>
+            <div class="form-line"><input type="tel" id="phone" ...></div>
+            
+            <div class="form-line submit-btn-container">
+                <button type="submit" id="submitButton" class="submit-btn">...</button>
+            </div>
+        </form>
+    </main>
+    
+    <footer>...</footer>
+    
+    <script>
+        const bookingForm = document.getElementById('bookingForm');
+        const submitButton = document.getElementById('submitButton');
+        const submitBtnText = document.getElementById('submitBtnText'); // Giả sử bạn có span này
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const successMessageDiv = document.getElementById('successMessage');
+        const apiErrorMessageDiv = document.getElementById('apiErrorMessage'); // Tin nhắn lỗi mới
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const phoneInput = document.getElementById('phone');
+        const phoneValidation = document.getElementById('phoneValidation');
+
+        phoneInput.addEventListener('input', function() {
+            const isValid = /^[0-9]{8,15}$/.test(this.value);
+            phoneValidation.style.display = isValid ? 'none' : 'block';
+        });
+
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            errorMessageDiv.style.display = 'none';
+            apiErrorMessageDiv.style.display = 'none';
+
+            // --- Phần validation cũ của bạn được giữ nguyên ---
+            const phoneValid = /^[0-9]{8,15}$/.test(phoneInput.value);
+            if (!phoneValid) { phoneValidation.style.display = 'block'; return; }
+            const dateTimeValue = document.getElementById('bookingDateTime').value;
+            if (!dateTimeValue) { alert("Please select a valid date and time"); return; }
+            // ... (các validation khác về thời gian) ...
+
+            submitButton.disabled = true;
+            loadingSpinner.style.display = 'inline-block';
+            // submitBtnText.innerHTML = 'Sending...';
+
+            // Lấy tên nhân viên đã chọn
+            const selectedStaffRadio = document.querySelector('input[name="staffChoice"]:checked');
+            const preferredStaffName = selectedStaffRadio ? selectedStaffRadio.value : 'Any';
+            document.getElementById('masseuse').value = preferredStaffName;
+
+            // --- GỌI ĐẾN CẢ 2 HỆ THỐNG ---
+
+            // 1. Gọi đến API MỚI (Render) để kiểm tra trùng lịch và lưu
+            const newApiPromise = fetch('https://lanxiang-api.onrender.com/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    fullName: document.getElementById('fullName').value,
+                    bookingDateTime: dateTimeValue,
+                    service: document.getElementById('service').value,
+                    preferredStaff: preferredStaffName,
+                    phoneNumber: phoneInput.value
+                })
+            });
+
+            // 2. Gọi đến Apps Script CŨ
+            const formDataForOldScript = new URLSearchParams();
+            formDataForOldScript.append('FullName', document.getElementById('fullName').value);
+            formDataForOldScript.append('BookingDateTime', dateTimeValue);
+            formDataForOldScript.append('Service', document.getElementById('service').value);
+            formDataForOldScript.append('PreferredStaff', preferredStaffName);
+            formDataForOldScript.append('PhoneNumber', phoneInput.value);
+            const oldApiPromise = fetch(bookingForm.action, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formDataForOldScript
+            });
+
+            // Xử lý kết quả
+            newApiPromise.then(response => response.json())
+            .then(data => {
+                if (data.status !== 'success') {
+                    // Nếu API mới báo lỗi (ví dụ: trùng lịch), hiển thị lỗi đó
+                    throw new Error(data.message);
+                }
+                // Nếu API mới thành công, hiển thị thông báo thành công
+                const selectedDate = new Date(dateTimeValue);
+                document.getElementById('confirm_name').innerText = document.getElementById('fullName').value;
+                document.getElementById('confirm_datetime').innerText = `${selectedDate.toLocaleDateString()} ${selectedDate.toLocaleTimeString()}`;
+                document.getElementById('confirm_service').innerText = document.getElementById('service').value;
+                document.getElementById('confirm_phone').innerText = phoneInput.value;
+                document.getElementById('confirm_masseuse').innerText = preferredStaffName || 'None';
+                
+                bookingForm.style.display = 'none';
+                document.getElementById('form-description').style.display = 'none';
+                successMessageDiv.style.display = 'block';
+            })
+            .catch(error => {
+                // Bắt và hiển thị lỗi từ API mới
+                apiErrorMessageDiv.innerText = `Booking Failed: ${error.message}`;
+                apiErrorMessageDiv.style.display = 'block';
+            })
+            .finally(() => {
+                // Luôn bật lại nút bấm
+                submitButton.disabled = false;
+                loadingSpinner.style.display = 'none';
+                // submitBtnText.innerHTML = 'Send Booking Request';
+            });
+        });
+
+        // Các hàm cũ khác của bạn
+        const fullNameInput = document.getElementById('fullName');
+        fullNameInput.addEventListener('input', function() { this.value = this.value.toUpperCase(); });
+        // ... (code set min/max cho datetime picker) ...
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const RENDER_API_BASE_URL = 'https://lanxiang-api.onrender.com';
+            
+            const bookingDateField = document.getElementById('bookingDateTime');
+            const staffContainer = document.getElementById('staff-availability-container');
+            const staffList = document.getElementById('staff-list');
+            const staffLoading = document.getElementById('staff-loading');
+
+            async function fetchStaffAvailability(dateTimeValue) {
+                if (!dateTimeValue) { staffContainer.style.display = 'none'; return; }
+                staffContainer.style.display = 'block';
+                staffList.innerHTML = ''; 
+                staffLoading.style.display = 'block';
+                staffLoading.innerHTML = '<p>Loading staff list...</p>';
+                try {
+                    const isoDate = new Date(dateTimeValue);
+                    const formattedDate = isoDate.getFullYear() + '-' + ('0' + (isoDate.getMonth() + 1)).slice(-2) + '-' + ('0' + isoDate.getDate()).slice(-2);
+                    const response = await fetch(`${RENDER_API_BASE_URL}/api/staff-availability?date=${formattedDate}`);
+                    const data = await response.json();
+                    if (!response.ok) { throw new Error(data.details || 'API server error'); }
+                    displayStaff(data.staff_availability);
+                } catch (error) {
+                    staffLoading.innerHTML = `<p style="color:red;">Could not load staff list: ${error.message}</p>`;
+                }
+            }
+
+            function displayStaff(staffData) {
+                staffLoading.style.display = 'none';
+                staffList.innerHTML = '';
+                if (!staffData || staffData.length === 0) {
+                    staffList.innerHTML = '<li>No staff available for this date.</li>';
+                    return;
+                }
+                const noPreferenceItem = document.createElement('li');
+                noPreferenceItem.className = 'staff-item';
+                noPreferenceItem.innerHTML = `<input type="radio" id="staff-none" name="staffChoice" value="Any" checked><label for="staff-none" class="staff-name">No Preference / 随便</label>`;
+                noPreferenceItem.onclick = () => document.getElementById('staff-none').checked = true;
+                staffList.appendChild(noPreferenceItem);
+
+                staffData.forEach(staff => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'staff-item';
+                    const statusClass = staff.status === 'Available' ? 'status-available' : 'status-busy';
+                    const statusText = staff.status === 'Available' ? 'Available / 空闲' : `Wait ${staff.wait_time_minutes} min / 预计等待 ${staff.wait_time_minutes} 分钟`;
+                    const uniqueId = `staff-${staff.name.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    listItem.innerHTML = `<input type="radio" id="${uniqueId}" name="staffChoice" value="${staff.name}"><label for="${uniqueId}" class="staff-name">${staff.name}</label><span class="staff-status ${statusClass}">${statusText}</span>`;
+                    listItem.onclick = () => document.getElementById(uniqueId).checked = true;
+                    staffList.appendChild(listItem);
+                });
+            }
+            
+            let debounceTimer;
+            bookingDateField.addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => fetchStaffAvailability(bookingDateField.value), 500);
+            });
+        });
+    </script>
+</body>
+</html>
